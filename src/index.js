@@ -2,9 +2,25 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { store } from './app/store';
 import { Provider } from 'react-redux';
-import * as serviceWorker from './serviceWorker';
+import * as serviceWorker from './serviceWorker'
+import {createStore,applyMiddleware} from "redux"
+import { combineReducers } from '@reduxjs/toolkit'
+import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
+// use applyMiddleware to add the thunk middleware to the store
+import { projectReducer  } from './reducers/projectReducer';
+const rootReducer=combineReducers({
+  projectAll:projectReducer
+})
+const composeEnhancers = composeWithDevTools({
+  // Specify name here, actionsBlacklist, actionsCreators and other options if needed
+});
+
+const store=createStore(rootReducer,composeEnhancers(applyMiddleware(thunk)));
+
+// sagaMiddleware.run(mySaga)
+
 
 ReactDOM.render(
   <React.StrictMode>
